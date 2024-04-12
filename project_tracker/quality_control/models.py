@@ -20,7 +20,13 @@ class BugReport(models.Model):
 		default='New'
 	)
 
-	PRIORITY_CHOICES = (1, 2, 3, 4, 5)
+	PRIORITY_CHOICES = (
+		(1, 'Низкий'),
+		(2, 'Ниже среднего'),
+		(3, 'Средний'),
+		(4, 'Высокий'),
+		(5, 'Высший'),
+	)
 	priority = models.IntegerField(choices=PRIORITY_CHOICES)
 
 	project = models.ForeignKey(
@@ -32,7 +38,9 @@ class BugReport(models.Model):
 	task = models.ForeignKey(
 		Task,
 		related_name='bug_reports',
-		on_delete=models.SET_NULL
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True
 	)
 
 
@@ -53,7 +61,13 @@ class FeatureRequest(models.Model):
 		default='Reviewing'
 	)
 
-	PRIORITY_CHOICES = (1, 2, 3, 4, 5)
+	PRIORITY_CHOICES = (
+		(1, 'Низкий'),
+		(2, 'Ниже среднего'),
+		(3, 'Средний'),
+		(4, 'Высокий'),
+		(5, 'Высший'),
+	)
 	priority = models.IntegerField(choices=PRIORITY_CHOICES)
 
 	project = models.ForeignKey(
@@ -65,5 +79,7 @@ class FeatureRequest(models.Model):
 	task = models.ForeignKey(
 		Task,
 		related_name='feature_requests',
-		on_delete=models.SET_NULL
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True
 	)
