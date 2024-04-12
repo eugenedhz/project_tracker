@@ -17,6 +17,17 @@ class Task(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	STATUS_CHOICES = (
+		('New', 'Новая'),
+		('In_progress', 'В работе'),
+		('Completed', 'Завершена')
+	)
+	status = models.CharField(
+		max_length=50,
+		choices=STATUS_CHOICES,
+		default='New'
+	)
+
 	project = models.ForeignKey(
 		Project,
 		related_name='tasks',
@@ -29,15 +40,4 @@ class Task(models.Model):
 		on_delete=models.SET_NULL,
 		null=True,
 		blank=True
-	)
-
-	STATUS_CHOICES = (
-		('New', 'Новая'),
-		('In_progress', 'В работе'),
-		('Completed', 'Завершена')
-	)
-	status = models.CharField(
-		max_length=50,
-		choices=STATUS_CHOICES,
-		default='New'
 	)
