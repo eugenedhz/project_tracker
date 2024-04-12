@@ -45,7 +45,7 @@ class BugReport(models.Model):
 
 
 	def __str__(self):
-		return self.name
+		return self.title
 
 
 class FeatureRequest(models.Model):
@@ -90,4 +90,4 @@ class FeatureRequest(models.Model):
 
 
 	def __str__(self):
-		return self.name
+		return self.title
