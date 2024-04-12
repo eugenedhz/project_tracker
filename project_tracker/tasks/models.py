@@ -7,6 +7,9 @@ class Project(models.Model):
 	description = models.TextField()
 	created_at = models.DateTimeField(auto_now_add=True)
 
+	def __str__(self):
+		return self.name
+
 
 class Task(models.Model):
 	name = models.CharField(max_length=100)
