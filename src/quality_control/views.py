@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, UpdateView, DeleteView
+from django.views.generic import DetailView, UpdateView, DeleteView, ListView, CreateView
 
 from tasks.models import Project
 from .models import BugReport, FeatureRequest
@@ -31,6 +31,11 @@ def bug_list(request):
 	return render(request, 'quality_control/bug_list.html', {'bug_list': bugs})
 
 
+# class BugListView(ListView):
+#     model = BugReport
+#     template_name = 'quality_control/bug_list.html'
+
+
 class BugDetailView(DetailView):
 	model = BugReport
 	pk_url_kwarg = 'bug_report_id'
@@ -46,10 +51,23 @@ class BugDetailView(DetailView):
 		return context
 
 
+# def bug_detail(request, bug_report_id):
+# 	bug = get_object_or_404(BugReport, id=bug_report_id)	
+# 	task = bug.task
+# 	project = bug.project
+
+# 	return render(request, 'quality_control/bug_detail.html', {'bug': bug, 'task': task, 'project': project})
+
+
 def feature_list(request):
 	features = FeatureRequest.objects.all()
 
 	return render(request, 'quality_control/feature_list.html', {'feature_list': features})
+
+
+# class FeatureListView(ListView):
+#     model = FeatureRequest
+#     template_name = 'quality_control/feature_list.html'
 
 
 class FeatureDetailView(DetailView):
@@ -65,6 +83,14 @@ class FeatureDetailView(DetailView):
 		context['feature'] = self.object
 
 		return context
+
+
+# def feature_detail(request, feature_request_id):
+# 	feature = get_object_or_404(FeatureRequest, id=feature_request_id)	
+# 	task = feature.task
+# 	project = feature.project
+
+# 	return render(request, 'quality_control/feature_detail.html', {'feature': feature, 'task': task, 'project': project})
 
 
 def create_bug_report(request, project_id):
@@ -83,6 +109,24 @@ def create_bug_report(request, project_id):
 	return render(request, 'quality_control/bug_report_form.html', {'form': form, 'project': project})
 
 
+# class BugReportCreateView(CreateView):
+#     model = BugReport
+#     form_class = BugReportForm
+#     template_name = 'quality_control/bug_report_form.html'
+
+
+#     def form_valid(self, form):
+#         project_id = self.kwargs['project_id']
+#         project = Project.objects.get(pk=project_id)
+#         form.instance.project = project
+
+#         return super().form_valid(form)
+
+
+#     def get_success_url(self):
+#         return reverse('quality_control:bug_list')
+
+
 def create_feature_request(request, project_id):
 	project = get_object_or_404(Project, pk=project_id)
 
@@ -97,6 +141,21 @@ def create_feature_request(request, project_id):
 		form = FeatureRequestForm(initial={'project_id': project.id})
 
 	return render(request, 'quality_control/feature_request_form.html', {'form': form, 'project': project})
+
+
+# class FeatureRequestCreateView(CreateView):
+#     model = FeatureRequest
+#     form_class = FeatureRequestForm
+#     template_name = 'quality_control/feature_request_form.html'
+
+#     def form_valid(self, form):
+#         project_id = self.kwargs['project_id']
+#         project = Project.objects.get(pk=project_id)
+#         form.instance.project = project
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse('quality_control:feature_list')
 
 
 def update_bug(request, project_id, bug_report_id):
