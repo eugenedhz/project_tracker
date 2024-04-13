@@ -9,24 +9,24 @@ class BugReport(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
-	STATUS_CHOICES = (
-		('New', 'Новая'),
-		('In_progress', 'В работе'),
-		('Completed', 'Завершена')
-	)
+	STATUS_CHOICES = {
+		'New': 'Новая',
+		'In_progress': 'В работе',
+		'Completed': 'Завершена'
+	}
 	status = models.CharField(
 		max_length=50,
 		choices=STATUS_CHOICES,
 		default='New'
 	)
 
-	PRIORITY_CHOICES = (
-		(1, 'Низкий'),
-		(2, 'Ниже среднего'),
-		(3, 'Средний'),
-		(4, 'Высокий'),
-		(5, 'Высший'),
-	)
+	PRIORITY_CHOICES = {
+		1: 'Низкий',
+		2: 'Ниже среднего',
+		3: 'Средний',
+		4: 'Высокий',
+		5: 'Высший'
+	}
 	priority = models.IntegerField(choices=PRIORITY_CHOICES)
 
 	project = models.ForeignKey(
@@ -54,24 +54,24 @@ class FeatureRequest(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
-	STATUS_CHOICES = (
-		('Reviewing', 'Рассмотрение'),
-		('Accepted', 'Принято'),
-		('Rejected', 'Отклонено')
-	)
+	STATUS_CHOICES = {
+		'Reviewing': 'Рассмотрение',
+		'Accepted': 'Принято',
+		'Rejected': 'Отклонено'
+	}
 	status = models.CharField(
 		max_length=50,
 		choices=STATUS_CHOICES,
 		default='Reviewing'
 	)
 
-	PRIORITY_CHOICES = (
-		(1, 'Низкий'),
-		(2, 'Ниже среднего'),
-		(3, 'Средний'),
-		(4, 'Высокий'),
-		(5, 'Высший'),
-	)
+	PRIORITY_CHOICES = {
+		1: 'Низкий',
+		2: 'Ниже среднего',
+		3: 'Средний',
+		4: 'Высокий',
+		5: 'Высший'
+	}
 	priority = models.IntegerField(choices=PRIORITY_CHOICES)
 
 	project = models.ForeignKey(
