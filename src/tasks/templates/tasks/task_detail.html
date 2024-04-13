@@ -8,6 +8,10 @@
     <p>Статус: {{ task.get_status_display }}</p>
     <p>Описание: {{ task.description }}</p>
 
+    <a href="{% url 'tasks:update_task' project_id=task.project.id task_id=task.id %}">Изменить задачу</a>
+    <br>
+    <p><a href="{% url 'tasks:delete_task' project_id=task.project.id task_id=task.id %}" onclick="return confirm('Вы уверены, что хотите удалить эту задачу?');">Удалить задачу</a></p>
+
     <h2>Другие задачи в проекте</h2>
     <ul>
         {% for other_task in task.project.tasks.all %}
