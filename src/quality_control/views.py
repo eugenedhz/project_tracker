@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView, DeleteView
 
 from tasks.models import Project
 from .models import BugReport, FeatureRequest
@@ -96,3 +97,95 @@ def create_feature_request(request, project_id):
 		form = FeatureRequestForm(initial={'project_id': project.id})
 
 	return render(request, 'quality_control/feature_request_form.html', {'form': form, 'project': project})
+
+
+def update_bug(request, project_id, bug_report_id):
+	project = get_object_or_404(Project, pk=project_id)
+	bug = get_object_or_404(BugReport, pk=bug_report_id)
+
+	if request.method == 'POST':
+		form = BugReportForm(request.POST or None, initial={'project_id': None}, instance=bug)
+		if form.is_valid():
+			form.save()
+			return redirect('quality_control:bug_detail', bug_report_id=bug.id)
+	else:
+		form = BugReportForm(initial={'project_id': project.id}, instance=bug)
+	
+	return render(request, 'quality_control/bug_update.html', {'form': form, 'bug': bug})
+
+
+# class BugUpdateView(UpdateView):
+# 	model = BugReport
+# 	form_class = BugReportForm
+# 	template_name = 'quality_control/bug_update.html'
+# 	pk_url_kwarg = 'bug_report_id'
+
+# 	def get_success_url(self):
+# 		return reverse_lazy('quality_control:bug_detail', kwargs={'bug_report_id': self.object.id})
+
+
+def update_feature(request, project_id, feature_request_id):
+	project = get_object_or_404(Project, pk=project_id)
+	feature = get_object_or_404(FeatureRequest, pk=feature_request_id)
+
+	if request.method == 'POST':
+		form = FeatureRequestForm(request.POST or None, initial={'project_id': None}, instance=feature)
+		if form.is_valid():
+			form.save()
+			return redirect('quality_control:feature_detail', feature_request_id=feature.id)
+	else:
+		form = FeatureRequestForm(initial={'project_id': project.id}, instance=feature)
+	
+	return render(request, 'quality_control/feature_update.html', {'form': form, 'feature': feature})
+
+
+# class FeatureUpdateView(UpdateView):
+# 	model = FeatureRequest
+# 	form_class = FeatureRequestForm
+# 	template_name = 'quality_control/feature_update.html'
+# 	pk_url_kwarg = 'feature_request_id'
+
+# 	def get_success_url(self):
+# 		return reverse_lazy('quality_control:feature_detail', kwargs={'feature_request_id': self.object.id})
+
+
+def delete_bug_report(request, bug_report_id):
+	bug = get_object_or_404(BugReport, pk=bug_report_id)
+	bug.delete()
+
+	return redirect('quality_control:bug_list')
+
+
+# class BugDeleteView(DeleteView):
+# 	model = BugReport
+# 	pk_url_kwarg = 'bug_report_id'
+# 	success_url = reverse_lazy('quality_control:bug_list')
+# 	template_name = 'quality_control/bug_confirm_delete.html'
+
+
+# 	def get_context_data(self, **kwargs):
+# 		context = super().get_context_data(**kwargs)
+# 		context['bug'] = self.object
+
+# 		return context
+
+
+def delete_feature_request(request, feature_request_id):
+	feature = get_object_or_404(FeatureRequest, pk=feature_request_id)
+	feature.delete()
+
+	return redirect('quality_control:feature_list')
+
+
+# class FeatureDeleteView(DeleteView):
+# 	model = FeatureRequest
+# 	pk_url_kwarg = 'feature_request_id'
+# 	success_url = reverse_lazy('quality_control:feature_list')
+# 	template_name = 'quality_control/feature_confirm_delete.html'
+
+
+# 	def get_context_data(self, **kwargs):
+# 		context = super().get_context_data(**kwargs)
+# 		context['feature'] = self.object
+
+# 		return context

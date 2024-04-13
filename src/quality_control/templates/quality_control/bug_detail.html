@@ -16,4 +16,7 @@
     <p>Статус: {{ bug.get_status_display }}</p>
     <p>Приоритет: {{ bug.get_priority_display }}</p>
     <p>Описание: {{ bug.description }}</p>
+
+    <p><a href="{% url 'quality_control:update_bug' project.id bug.id %}">Изменить отчёт бага</a></p>
+    <p><a href="{% url 'quality_control:delete_bug_report' bug.id %}"onclick="return confirm('Вы уверены, что хотите удалить этот отчёт?');">Удалить отчёт бага</a></p>
 {% endblock %}
