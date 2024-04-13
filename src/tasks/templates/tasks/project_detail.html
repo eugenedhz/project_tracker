@@ -5,6 +5,10 @@
     <p>Описание: {{ project.description }}</p>
 
     <p><a href="{% url 'tasks:add_task_to_project' project.id %}">Добавить новую задачу</a></p>
+    <br>
+    <a href="{% url 'quality_control:create_bug_report' project.id %}">Создать отчёт бага</a>
+    <br>
+    <a href="{% url 'quality_control:create_feature_request' project.id %}">Создать запрос на улучшение</a>
 
     <h2>Задачи в проекте</h2>
     <ul>

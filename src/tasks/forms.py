@@ -1,5 +1,5 @@
 from django.forms import (
-    ModelForm, CharField, EmailField, Form
+    ModelForm, CharField, EmailField, Form, Textarea
 )
 
 from .models import Project, Task
@@ -8,7 +8,7 @@ from .models import Project, Task
 class FeedbackForm(Form):
     name = CharField(label='Ваше имя', max_length=100)
     email = EmailField(label='Электронная почта')
-    message = CharField(widget=forms.Textarea, label='Сообщение')
+    message = CharField(widget=Textarea, label='Сообщение')
 
 
 class ProjectForm(ModelForm):

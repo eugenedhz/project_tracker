@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DetailView
 
+from tasks.models import Project
 from .models import BugReport, FeatureRequest
+from .forms import BugReportForm, FeatureRequestForm
 
 
 # def index(request):
@@ -62,3 +64,35 @@ class FeatureDetailView(DetailView):
 		context['feature'] = self.object
 
 		return context
+
+
+def create_bug_report(request, project_id):
+	project = get_object_or_404(Project, pk=project_id)
+
+	if request.method == 'POST':
+		form = BugReportForm(request.POST or None, initial={'project_id': None})
+		if form.is_valid():
+			bug = form.save(commit=False)
+			bug.project = project
+			bug.save()
+			return redirect('quality_control:bug_list')
+	else:
+		form = BugReportForm(initial={'project_id': project.id})
+
+	return render(request, 'quality_control/bug_report_form.html', {'form': form, 'project': project})
+
+
+def create_feature_request(request, project_id):
+	project = get_object_or_404(Project, pk=project_id)
+
+	if request.method == 'POST':
+		form = FeatureRequestForm(request.POST or None, initial={'project_id': None})
+		if form.is_valid():
+			feature = form.save(commit=False)
+			feature.project = project
+			feature.save()
+			return redirect('quality_control:feature_list')
+	else:
+		form = FeatureRequestForm(initial={'project_id': project.id})
+
+	return render(request, 'quality_control/feature_request_form.html', {'form': form, 'project': project})
