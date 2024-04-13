@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>Проект {{ project.name }}</h1>
+    <p>Описание: {{ project.description }}</p>
+
+    <h1>Задача {{ task.name }}</h1>
+    <p>Статус: {{ task.get_status_display }}</p>
+    <p>Описание: {{ task.description }}</p>
+
+    <h2>Другие задачи в проекте</h2>
+    <ul>
+        {% for other_task in task.project.tasks.all %}
+            {% if other_task != task %}
+                <li><a href="{% url 'tasks:task_detail' project.id other_task.id %}">{{ other_task.name }}</a> - {{ other_task.get_status_display }}</li>
+            {% endif %}
+        {% endfor %}
+
+        {% if task.project.tasks.all|length == 1 %}
+            <p>В этом проекте пока нет других задач.</p>
+        {% endif %}
+    </ul>
+{% endblock %}
