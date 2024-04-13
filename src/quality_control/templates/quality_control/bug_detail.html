@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>Проект <a href="{% url 'tasks:project_detail' project.id %}">{{ project.name }}</a></h1>
+    <p>Описание: {{ project.description }}</p>
+
+    {% if task %}
+        <h1>Задача <a href="{% url 'tasks:task_detail' project.id task.id %}">{{ task.name }}</a></h1>
+        <p>Описание: {{ task.description }}</p>
+    {% else %}
+        <h1>Задача</h1>
+        <p>Нет прикреплённой задачи</p>
+    {% endif %}
+
+    <h1>Баг {{ bug.title }}</h1>
+    <p>Статус: {{ bug.get_status_display }}</p>
+    <p>Приоритет: {{ bug.get_priority_display }}</p>
+    <p>Описание: {{ bug.description }}</p>
+{% endblock %}

@@ -1,6 +1,4 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
 
@@ -28,7 +26,9 @@ class TaskDetailView(DetailView):
 	pk_url_kwarg = 'task_id'
 	template_name = 'tasks/task_detail.html'
 
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['project'] = self.object.project
+		
 		return context
